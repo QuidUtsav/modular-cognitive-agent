@@ -1,135 +1,115 @@
-# 🧠 Intent Router for a Conversational AI Assistant (WIP)
+🧠 Intent Router & Entity Extractor (Week 1 Complete)
 
-This repository contains the **early brain of a Jarvis-style personal assistant** — an intent router that decides *how* the assistant should respond to user input.
+This repository contains the cognitive core of a Jarvis-style personal assistant.
 
-Instead of blindly replying to everything like a chatbot, this system **classifies user intent** and routes queries to the appropriate capability (conversation vs information lookup).
+It is an intelligent routing layer that processes user input, decides what the user wants (Intent), identifies key subjects (Entities), and selects the appropriate response strategy.
 
-> ⚠️ **Work in Progress**: This project is actively evolving. The current code represents an early but functional prototype. Major updates and extensions are planned.
+    Status: ✅ Week 1 Complete The system now classifies intents, extracts named entities (People, Locations, Orgs), and handles basic social interactions with randomized responses.
 
----
+✨ Week 1 Milestones
 
-## ✨ What This Project Does
+Moving beyond simple classification, the system now includes:
 
-Given a user input like:
+    Hybrid Intent Detection: Combines keyword heuristics (rules) with a Zero-Shot Transformer model.
 
-* "Hi"
-* "How are you?"
-* "Who invented Python?"
-* "Tell me about Nepal"
+    Named Entity Recognition (NER): Automatically extracts important details (e.g., "Nepal", "Python") using BERT.
 
-The system decides whether the user is:
+    Social Sub-Intents: granular handling of Greetings, Gratitude, Wellbeing, and Permissions.
 
-* 💬 Engaging in **social conversation**, or
-* 🔎 Requesting **factual information lookup**
+    Confidence Thresholding: A safety mechanism that defaults to "Search" if the AI isn't confident in its classification (<0.55).
 
-This decision is made using a **hybrid approach**:
+    Debug Mode: Outputs a structured JSON object visualizing the AI's decision process.
 
-* Rule-based intent overrides (high confidence patterns)
-* Zero-shot classification using a Hugging Face transformer model
-* A confidence threshold with a safe fallback strategy
+🧩 The Logic Flow
 
-This is a foundational component of a larger assistant system.
+The system doesn't just guess; it follows a specific decision tree to ensure reliability.
 
----
+    Normalization: Input is lowercased for consistency.
 
-## 🧩 Why This Matters
+    Heuristic Check:
 
-Most chatbot demos jump straight to text generation.
+        Does it contain specific "info verbs" (explain, define)? -> Force Search.
 
-Real assistants (like Jarvis-style systems) need **decision-making layers**:
+        Does it match social keywords? -> Force Social.
 
-* Should I chat or search?
-* Should I call a tool?
-* Should I ask a clarification question?
+    Zero-Shot Classification: If no rules match, the Transformer model analyzes the semantic meaning.
 
-This project focuses on **that missing layer** — the *intent routing brain*.
+    Confidence Check: If the model's confidence is low (below 55%), the system safely assumes it's a factual lookup.
 
----
+    Entity Extraction: Parallel process to pull out names and places.
 
-## 🏗️ Current Architecture
+    Response Generation:
 
-1. **Input normalization** (lowercasing)
-2. **Rule-based intent detection** (greetings, thanks, question keywords)
-3. **Zero-shot intent classification** using MNLI
-4. **Confidence-based fallback** (defaults to search when uncertain)
-5. **Explicit final decision output**
+        Social: Selects a random natural response from a pre-defined template.
 
-The system is designed to be:
+        Info: Prepares a placeholder for the future search engine.
 
-* Deterministic
-* Explainable
-* Easy to extend
+🤖 Models Used
 
----
+The brain consists of two distinct Hugging Face pipelines:
 
-## 🤖 Model Used
+Function	Model	Purpose
+Intent Classification	typeform/distilbert-base-uncased-mnli	Determines if input is "Social" or "Factual".
+Entity Extraction	dslim/bert-base-NER	Identifies Real-world objects (PER, ORG, LOC, MISC).
+💻 Usage & Example Output
 
-* `typeform/distilbert-base-uncased-mnli`
-* Zero-shot classification with semantic labels:
+When running the script, the assistant analyzes the input and returns a debug object containing the raw decision data.
+Scenario A: Information Lookup
 
-  * `social conversation`
-  * `factual information lookup`
+User Input: "Who invented Python?"
+JSON
 
-The model choice prioritizes:
+{
+  "input": "who invented python?",
+  "intent": "factual information lookup",
+  "social_act": null,
+  "entities": {
+      "MISC": ["Python"]
+  }
+}
 
-* Simplicity
-* Interpretability
-* Rapid prototyping
+System Action: triggers handle_factual_information_lookup
+Scenario B: Social Interaction
 
----
+User Input: "Thanks for your help"
+JSON
 
-## 🚧 Current Limitations (By Design)
+{
+  "input": "thanks for your help",
+  "intent": "social conversation",
+  "social_act": "GRATITUDE",
+  "entities": {}
+}
 
-* No real search engine integration yet
-* No memory or multi-turn context
-* Keyword matching is substring-based
-* Not optimized for edge cases
+System Action: Responds "Glad I could help 🙂"
+🏗️ Code Structure (Week 1)
 
-These are **intentional** — the focus is on building a solid core before scaling.
+    route_intent(text): The core logic gate.
 
----
+    extract_entities(text): The NER pipeline.
 
-## 🛣️ Planned Updates
+    handle_social_conversation(text): Matches specific social cues to templates.
 
-* 🔌 Plug in a real search backend (Wikipedia / web search)
-* 🧠 Add more intent classes (tasks, commands, clarifications)
-* 🧾 Improve rule system (token-aware / regex-based)
-* 🔄 Multi-turn intent refinement
-* 🤖 Integration into a full conversational assistant
+    SOCIAL_ACT_RESPONSES: A dictionary of randomized persona-based replies.
 
-This repository will evolve step by step.
+🚧 Current Limitations
 
----
+    Search is Mocked: The system identifies when to search, but doesn't actually query the web yet.
 
-## 🎯 Long-Term Vision
+    NER Sensitivity: The bert-base-NER model is case-sensitive (normalization logic needs fine-tuning for entities).
 
-This project is part of a larger goal:
+    Context: No multi-turn memory yet (each query is treated as new).
 
-> Building a **Jarvis-like intelligent assistant** — capable of reasoning, tool use, and natural interaction.
+🛣️ Roadmap: Week 2
 
-This intent router is the **first cognitive layer** of that system.
+    🔌 Connect Real Search: Replace the mock print statement with a Wikipedia API or Google Search integration.
 
----
+    🧠 Command Intent: Add a third intent class for "Actions" (e.g., "Open YouTube", "Set a timer").
 
-## 🧑‍💻 About the Author
+    🧹 Code Refactoring: Move dictionaries and config to a separate file for cleaner logic.
 
-Computer Engineering student with a focus on:
+🧑‍💻 About the Project
 
-* Natural Language Processing
-* Applied AI systems
-* Assistant and agent architectures
+This is a personal journey into Applied AI Systems. The goal is not just to use an LLM API, but to understand the architecture required to build a controllable, deterministic assistant system.
 
-Built as part of a long-term, project-based NLP journey.
-
----
-
-## ⭐ Status
-
-🟡 **Active Development**
-Expect breaking changes, refactors, and new features.
-
-Feedback, ideas, and discussions are welcome.
-
----
-
-> *This is not a finished product — it’s a system growing in public.*
+Feedback and contributions are welcome!
