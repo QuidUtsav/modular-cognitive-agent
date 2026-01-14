@@ -2,11 +2,18 @@
 import random
 from transformers import pipeline
 
-
+#Defining Models
 model = pipeline(
     task="zero-shot-classification",
     model="typeform/distilbert-base-uncased-mnli"
 )
+ner = pipeline(
+    task="ner",
+    model="dslim/bert-base-NER",
+    aggregation_strategy="simple"
+)
+
+#Common patterns to identify intents
 label =["social conversation","factual information lookup"]
 chat_content = ["hi","hello","thanks","thank you"]
 search_content = ["who", "what", "when", "where", "how does","tell me about"]
@@ -34,6 +41,10 @@ SOCIAL_ACT_RESPONSES = {
       "I'm just here to help you 🙂"
   ]
 }
+INFO_VERBS = ["explain", "tell", "describe", "define"]
+
+def looks_like_info_request(text):
+    return any(v in text for v in INFO_VERBS)
 
 def route_intent(text):
   result=model(text,label)
@@ -57,28 +68,54 @@ def handle_social_conversation(text):
       return key
   return None
 
-
-
 def handle_factual_information_lookup(text):
   print("Let me look that up for you.")
   return "(Search results will appear here)"
 
-while(True):
-  text=input("what do you have in mind today? ")
-  text=text.lower()
-  intent = route_intent(text)
-  print(f"{intent}")
+def extract_entities(text):
+  entities = ner(text)
+  values={}
 
-  if intent =="social conversation":
-    social_act = handle_social_conversation(text)
-    if social_act:
-      return_text = random.choice(SOCIAL_ACT_RESPONSES[social_act])
+  for entity in entities:
+    label = entity["entity_group"]
+    word = entity["word"]
+
+    values.setdefault(label, []).append(word)
+  return values
+
+def debug_decision(raw_text, intent, entities, social_act=None):
+    return {
+        "input": raw_text,
+        "intent": intent,
+        "social_act": social_act,
+        "entities": entities
+    }
+
+while True:
+    raw_text = input("what do you have in mind today? ")
+    normalized_text = raw_text.lower()
+
+    if looks_like_info_request(normalized_text):
+        intent = "factual information lookup"
     else:
-      return_text = random.choice(SOCIAL_ACT_RESPONSES["GREETING"])
-    print(f"{return_text}")
-  else:
-    return_text = handle_factual_information_lookup(text)
-    print(f"{return_text}")
-  print("press 1 to exit")
-  if(input()=="1"):
-    break
+        intent = route_intent(normalized_text)
+
+    print(intent)
+
+    if intent == "social conversation":
+        social_act = handle_social_conversation(normalized_text)
+        if social_act:
+            response = random.choice(SOCIAL_ACT_RESPONSES[social_act])
+        else:
+            response = random.choice(SOCIAL_ACT_RESPONSES["GREETING"])
+    else:
+        response = handle_factual_information_lookup(raw_text)
+
+    entities = extract_entities(raw_text)
+
+    debug = debug_decision(raw_text, intent, entities, response)
+    print(debug)
+
+    print("press 1 to exit")
+    if input() == "1":
+        break
