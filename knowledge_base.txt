@@ -1,0 +1,11 @@
+Machine Learning is a field of artificial intelligence where systems learn patterns from data instead of being explicitly programmed.
+
+Supervised learning uses labeled data, meaning the correct output is known during training.
+
+Unsupervised learning finds hidden patterns in data without labeled outputs.
+
+Natural Language Processing is a branch of AI focused on understanding and generating human language.
+
+Large language models generate text by predicting the next word based on context.
+
+Retrieval-Augmented Generation allows a model to answer questions using external documents instead of relying only on memory.
