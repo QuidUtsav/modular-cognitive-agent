@@ -14,7 +14,7 @@ labels = [
     "chat"
 ]
 looks_like_chat = ["how are you", "tell me a joke", "what's up", "let's chat"]
-looks_like_needs_retrieval = ["find me", "search for", "look up", "retrieve information about","document","according to","Compare"]
+looks_like_needs_retrieval = ["find me", "search for", "look up", "retrieve information about","document","according to","compare"]
 looks_like_needs_reasoning = ["why", "how", "explain", "analyze", "compare"]
 
 """Priority: chat → retrieval → reasoning → direct_answer
