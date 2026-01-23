@@ -23,7 +23,7 @@ def chunk_knowledge_base(text):
     chunks = []
     for i, para in enumerate(paragraphs):
       para = para.strip()
-      if len(para) < 50:
+      if len(para) < 20:
         continue
       chunks.append(
         {
@@ -62,7 +62,7 @@ def retrieve_top_chunks_from_knowledge_base(chunks, query_embedding, top_k=3):
     scores.sort(key=lambda x: x[0], reverse=True)
     return scores[:top_k]
   
-def retrieve_context_from_knowledge_base(query, chunks, top_k=1):
+def retrieve_context_from_knowledge_base(query, chunks, top_k=3):
     query = normalize_query(query)
     query_embedding = embed_query(query)
     return retrieve_top_chunks_from_knowledge_base(chunks, query_embedding, top_k)

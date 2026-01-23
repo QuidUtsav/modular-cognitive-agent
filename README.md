@@ -1,115 +1,218 @@
-🧠 Intent Router & Entity Extractor (Week 1 Complete)
+🧠 Jarvis: Modular RAG Assistant (Week 2)
 
-This repository contains the cognitive core of a Jarvis-style personal assistant.
+A local, modular Personal AI Assistant built with Python, Hugging Face, and Scikit-Learn.
 
-It is an intelligent routing layer that processes user input, decides what the user wants (Intent), identifies key subjects (Entities), and selects the appropriate response strategy.
+    Status: ✅ Week 2 Complete (RAG & Reasoning) Focus: Architecture, Local Retrieval, and Hallucination Control.
 
-    Status: ✅ Week 1 Complete The system now classifies intents, extracts named entities (People, Locations, Orgs), and handles basic social interactions with randomized responses.
+Unlike simple API wrappers, Jarvis is designed as a cognitive system. It doesn't just guess; it reasons about how to answer a question—whether to chat casually, use internal logic, or retrieve facts from a local knowledge base (RAG).
+🚀 Week 2: The "Brain" Upgrade
 
-✨ Week 1 Milestones
+In Week 2, the system evolved from a simple intent classifier into a Retrieval-Augmented Generation (RAG) pipeline.
+Key New Capabilities
 
-Moving beyond simple classification, the system now includes:
+    📚 Local RAG System: Can read, chunk, and "learn" from local documents (document.txt) without uploading data to the cloud.
 
-    Hybrid Intent Detection: Combines keyword heuristics (rules) with a Zero-Shot Transformer model.
+    🧠 Decision Engine: A dedicated reasoning.py module that decides strategy (chat vs. retrieval vs. direct_answer) before acting.
 
-    Named Entity Recognition (NER): Automatically extracts important details (e.g., "Nepal", "Python") using BERT.
+    🛡️ Hallucination Guardrails: If the retrieval score is low (< 0.3), Jarvis explicitly admits "I don't know" rather than making things up.
 
-    Social Sub-Intents: granular handling of Greetings, Gratitude, Wellbeing, and Permissions.
+    🏗️ Modular Architecture: Refactored from a single script into a scalable package structure (core, retrieval, memory).
 
-    Confidence Thresholding: A safety mechanism that defaults to "Search" if the AI isn't confident in its classification (<0.55).
+🛠️ System Architecture
 
-    Debug Mode: Outputs a structured JSON object visualizing the AI's decision process.
+The project follows a "Manager-Worker" pattern to separate concerns.
 
-🧩 The Logic Flow
+graph TD
+    A[User Input] --> B[app.py (Manager)]
+    B --> C{Reasoning Engine}
+    C -- "Hello" --> D[Chat Module]
+    C -- "Explain X" --> E[RAG Pipeline]
+    
+    subgraph "RAG Pipeline"
+    E --> F[Vector Search (TF-IDF/Cosine)]
+    F --> G[Retrieve Context]
+    G --> H[Generator (Flan-T5)]
+    end
+    
+    D --> I[Output]
+    H --> I
 
-The system doesn't just guess; it follows a specific decision tree to ensure reliability.
+📂 File Structure
+    jarvis/
+    ├── app.py                 # The Main Entry Point (The Manager)
+    ├── data/
+    │   └── document.txt       # Local Knowledge Base
+    ├── jarvis/
+    │   ├── core/
+    │   │   ├── reasoning.py   # Decides Strategy (Chat vs. RAG)
+    │   │   ├── generation.py  # Wraps LLM (Flan-T5)
+    │   │   └── embeddings.py  # Handles Chunking & Vector Encoding
+    │   └── retrieval/
+    │       └── rag.py         # Combines Search + Generation
 
-    Normalization: Input is lowercased for consistency.
+🤖 Tech Stack & Models
+Component,Technology / Model,Role
+Generator,google/flan-t5-base,Generates natural language answers from context.
+Embeddings,all-MiniLM-L6-v2,Converts text into vector numbers for search.
+Similarity,Cosine Similarity,Math used to find the best matching paragraph.
+Framework,PyTorch & Transformers,The backbone for running models locally.
 
-    Heuristic Check:
+⚡ How It Works (The Logic Flow)
 
-        Does it contain specific "info verbs" (explain, define)? -> Force Search.
+    Input Normalization: User text is cleaned (lowercased, special characters removed).
 
-        Does it match social keywords? -> Force Social.
+    Strategy Decision:
 
-    Zero-Shot Classification: If no rules match, the Transformer model analyzes the semantic meaning.
+        If the user asks "How are you?", the Chat Strategy handles it instantly.
 
-    Confidence Check: If the model's confidence is low (below 55%), the system safely assumes it's a factual lookup.
+        If the user asks "Based on the document...", the Retrieval Strategy kicks in.
 
-    Entity Extraction: Parallel process to pull out names and places.
+    Retrieval (If needed):
 
-    Response Generation:
+        The system loads document.txt, splits it into chunks, and caches the embeddings.
 
-        Social: Selects a random natural response from a pre-defined template.
+        It finds the top 3 chunks most similar to the question.
 
-        Info: Prepares a placeholder for the future search engine.
+    Generation:
 
-🤖 Models Used
+        The LLM receives a prompt: "Answer using ONLY this context..."
 
-The brain consists of two distinct Hugging Face pipelines:
+        If context is missing or irrelevant, it returns a fallback response.
 
-Function	Model	Purpose
-Intent Classification	typeform/distilbert-base-uncased-mnli	Determines if input is "Social" or "Factual".
-Entity Extraction	dslim/bert-base-NER	Identifies Real-world objects (PER, ORG, LOC, MISC).
-💻 Usage & Example Output
+💻 Usage
+1. Setup
 
-When running the script, the assistant analyzes the input and returns a debug object containing the raw decision data.
-Scenario A: Information Lookup
+Ensure you have the required libraries installed:
+    pip install transformers torch scikit-learn sentence-transformers
 
-User Input: "Who invented Python?"
-JSON
+This is a huge milestone! You’ve moved from a simple text classifier to a full Retrieval-Augmented Generation (RAG) system with a modular architecture. That is a serious jump in complexity.
 
-{
-  "input": "who invented python?",
-  "intent": "factual information lookup",
-  "social_act": null,
-  "entities": {
-      "MISC": ["Python"]
-  }
-}
+Here is a professional, high-impact README.md tailored for your Week 2 completion. It highlights your move to "Systems Engineering" and the new capabilities like RAG, Reasoning, and Modular Design.
 
-System Action: triggers handle_factual_information_lookup
-Scenario B: Social Interaction
+You can copy-paste this directly into your README.md file.
+🧠 Jarvis: Modular RAG Assistant (Week 2)
 
-User Input: "Thanks for your help"
-JSON
+A local, modular Personal AI Assistant built with Python, Hugging Face, and Scikit-Learn.
 
-{
-  "input": "thanks for your help",
-  "intent": "social conversation",
-  "social_act": "GRATITUDE",
-  "entities": {}
-}
+    Status: ✅ Week 2 Complete (RAG & Reasoning) Focus: Architecture, Local Retrieval, and Hallucination Control.
 
-System Action: Responds "Glad I could help 🙂"
-🏗️ Code Structure (Week 1)
+Unlike simple API wrappers, Jarvis is designed as a cognitive system. It doesn't just guess; it reasons about how to answer a question—whether to chat casually, use internal logic, or retrieve facts from a local knowledge base (RAG).
+🚀 Week 2: The "Brain" Upgrade
 
-    route_intent(text): The core logic gate.
+In Week 2, the system evolved from a simple intent classifier into a Retrieval-Augmented Generation (RAG) pipeline.
+Key New Capabilities
 
-    extract_entities(text): The NER pipeline.
+    📚 Local RAG System: Can read, chunk, and "learn" from local documents (document.txt) without uploading data to the cloud.
 
-    handle_social_conversation(text): Matches specific social cues to templates.
+    🧠 Decision Engine: A dedicated reasoning.py module that decides strategy (chat vs. retrieval vs. direct_answer) before acting.
 
-    SOCIAL_ACT_RESPONSES: A dictionary of randomized persona-based replies.
+    🛡️ Hallucination Guardrails: If the retrieval score is low (< 0.3), Jarvis explicitly admits "I don't know" rather than making things up.
+
+    🏗️ Modular Architecture: Refactored from a single script into a scalable package structure (core, retrieval, memory).
+
+🛠️ System Architecture
+
+The project follows a "Manager-Worker" pattern to separate concerns.
+Code snippet
+
+graph TD
+    A[User Input] --> B[app.py (Manager)]
+    B --> C{Reasoning Engine}
+    C -- "Hello" --> D[Chat Module]
+    C -- "Explain X" --> E[RAG Pipeline]
+    
+    subgraph "RAG Pipeline"
+    E --> F[Vector Search (TF-IDF/Cosine)]
+    F --> G[Retrieve Context]
+    G --> H[Generator (Flan-T5)]
+    end
+    
+    D --> I[Output]
+    H --> I
+
+📂 File Structure
+Plaintext
+
+jarvis/
+├── app.py                 # The Main Entry Point (The Manager)
+├── data/
+│   └── document.txt       # Local Knowledge Base
+├── jarvis/
+│   ├── core/
+│   │   ├── reasoning.py   # Decides Strategy (Chat vs. RAG)
+│   │   ├── generation.py  # Wraps LLM (Flan-T5)
+│   │   └── embeddings.py  # Handles Chunking & Vector Encoding
+│   └── retrieval/
+│       └── rag.py         # Combines Search + Generation
+
+🤖 Tech Stack & Models
+Component	Technology / Model	Role
+Generator	google/flan-t5-base	Generates natural language answers from context.
+Embeddings	all-MiniLM-L6-v2	Converts text into vector numbers for search.
+Similarity	Cosine Similarity	Math used to find the best matching paragraph.
+Framework	PyTorch & Transformers	The backbone for running models locally.
+⚡ How It Works (The Logic Flow)
+
+    Input Normalization: User text is cleaned (lowercased, special characters removed).
+
+    Strategy Decision:
+
+        If the user asks "How are you?", the Chat Strategy handles it instantly.
+
+        If the user asks "Based on the document...", the Retrieval Strategy kicks in.
+
+    Retrieval (If needed):
+
+        The system loads document.txt, splits it into chunks, and caches the embeddings.
+
+        It finds the top 3 chunks most similar to the question.
+
+    Generation:
+
+        The LLM receives a prompt: "Answer using ONLY this context..."
+
+        If context is missing or irrelevant, it returns a fallback response.
+
+💻 Usage
+1. Setup
+
+Ensure you have the required libraries installed:
+
+    pip install transformers torch scikit-learn sentence-transformers
+
+2. Run Jarvis
+
+Execute the main application:
+
+    python app.py
+
+3. Example Interaction
+
+You: Who are you?
+[DEBUG] strategy=chat
+Jarvis: I am just here to help you 🙂
+
+You: How do I reset the device?
+[DEBUG] strategy=needs_retrieval
+[DEBUG] score=0.85 chunk_id=4
+Jarvis: To reset the device, hold the power button for 10 seconds.
 
 🚧 Current Limitations
 
-    Search is Mocked: The system identifies when to search, but doesn't actually query the web yet.
+    Short-Term Memory: Jarvis handles one question at a time. It doesn't yet remember "What did I just ask?".
 
-    NER Sensitivity: The bert-base-NER model is case-sensitive (normalization logic needs fine-tuning for entities).
+    Single Document: Currently optimized for reading one text file at a time.
 
-    Context: No multi-turn memory yet (each query is treated as new).
+    Speed: First run is slow due to model downloading/loading.
 
-🛣️ Roadmap: Week 2
+🛣️ Roadmap: Week 3
 
-    🔌 Connect Real Search: Replace the mock print statement with a Wikipedia API or Google Search integration.
+    🧠 Conversation History: Implement memory so Jarvis remembers the context of the chat.
 
-    🧠 Command Intent: Add a third intent class for "Actions" (e.g., "Open YouTube", "Set a timer").
+    🛠️ Tool Use: Allow Jarvis to perform actions (e.g., "Write this to a file" or "Calculate this").
 
-    🧹 Code Refactoring: Move dictionaries and config to a separate file for cleaner logic.
+    ⚡ Speed Optimization: Implement better caching to speed up repeated queries.
 
-🧑‍💻 About the Project
+👨‍💻 About the Author
 
-This is a personal journey into Applied AI Systems. The goal is not just to use an LLM API, but to understand the architecture required to build a controllable, deterministic assistant system.
-
-Feedback and contributions are welcome!
+This project is a journey into Applied AI Engineering—moving beyond API calls to building deterministic, controllable AI systems from scratch.
