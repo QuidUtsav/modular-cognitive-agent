@@ -14,6 +14,7 @@ def generate_text(prompt):
         max_new_tokens=100,
         do_sample=False
     )
+    print(f"[DEBUG] generated_text={output[0]['generated_text']}")
     return {
     "answer": output[0]["generated_text"],
     "model": "flan-t5-base"

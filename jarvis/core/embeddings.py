@@ -60,13 +60,13 @@ def retrieve_top_chunks_from_knowledge_base(chunks, query_embedding, top_k=3):
         scores.append((score, chunk))
 
     scores.sort(key=lambda x: x[0], reverse=True)
-    return [c for _, c in scores[:top_k]]
+    return scores[:top_k]
   
 def retrieve_context_from_knowledge_base(query, chunks, top_k=1):
     query = normalize_query(query)
     query_embedding = embed_query(query)
     return retrieve_top_chunks_from_knowledge_base(chunks, query_embedding, top_k)
-  
+
 def prepare_chunks_for_knowledge_base(text):
     cleaned_text = clean_document(text)
     raw_chunks = chunk_knowledge_base(cleaned_text)

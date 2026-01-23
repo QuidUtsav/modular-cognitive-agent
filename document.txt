@@ -1,2 +1,13 @@
-BERT is an encoder-only model
-GPT is a decoder-only model
+Transformer-based language models are a major breakthrough in natural language processing.
+
+BERT (Bidirectional Encoder Representations from Transformers) is an encoder-only model. It is trained using masked language modeling and next sentence prediction. Because it processes text bidirectionally, BERT is especially strong at understanding tasks such as classification, named entity recognition, and question answering.
+
+GPT (Generative Pre-trained Transformer), on the other hand, is a decoder-only model. It is trained using a causal language modeling objective, where the model predicts the next token given previous tokens. GPT excels at text generation tasks such as story writing, dialogue generation, and code generation.
+
+While BERT focuses on understanding language, GPT focuses on generating language. This architectural difference makes them suitable for different NLP applications.
+
+In real-world systems, encoder models like BERT are often used for retrieval and ranking, while decoder models like GPT are used for response generation.
+
+Retrieval-Augmented Generation (RAG) systems combine information retrieval with text generation. A retriever finds relevant documents, and a generator produces answers based only on the retrieved content.
+
+RAG systems reduce hallucination and improve factual accuracy by grounding responses in external knowledge sources.
