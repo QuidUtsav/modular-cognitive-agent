@@ -1,4 +1,3 @@
-import re
 from transformers import pipeline
 
 generator = pipeline(
@@ -7,18 +6,15 @@ generator = pipeline(
 )
 
 # Action for text-generation
-jarvis_prompt = """
+def generate_text(prompt):
+    prompt = prompt
 
-Question: A shopkeeper buys a pen for 10 rupees and sells it for 15 rupees. 
-If he sells 20 pens, what is his total profit?
-
-Let's think step by step.
-
-"""
-
-output = generator(
-    jarvis_prompt,
-    max_new_tokens=100,
-    do_sample=False
-)
-print(output[0]['generated_text'])
+    output = generator(
+        prompt,
+        max_new_tokens=100,
+        do_sample=False
+    )
+    return {
+    "answer": output[0]["generated_text"],
+    "model": "flan-t5-base"
+    }

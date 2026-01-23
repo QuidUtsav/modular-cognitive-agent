@@ -22,7 +22,7 @@ def chunk_knowledge_base(text):
     paragraphs = re.split(r'\n\n',text)
     chunks = []
     for i, para in enumerate(paragraphs):
-      para.strip()
+      para = para.strip()
       if len(para) < 50:
         continue
       chunks.append(
@@ -49,7 +49,7 @@ def normalize_query(query):
 def embed_query(query):
     return embedding_model.encode([query])[0]
 
-def retrieve_top_chunks_from_knowledge_base(chunks, query_embedding, top_k=1):
+def retrieve_top_chunks_from_knowledge_base(chunks, query_embedding, top_k=3):
     scores = []
 
     for chunk in chunks:
@@ -62,7 +62,7 @@ def retrieve_top_chunks_from_knowledge_base(chunks, query_embedding, top_k=1):
     scores.sort(key=lambda x: x[0], reverse=True)
     return [c for _, c in scores[:top_k]]
   
-def retrieve_context_from_knowledge_base(query, chunks, top_k=3):
+def retrieve_context_from_knowledge_base(query, chunks, top_k=1):
     query = normalize_query(query)
     query_embedding = embed_query(query)
     return retrieve_top_chunks_from_knowledge_base(chunks, query_embedding, top_k)
@@ -74,12 +74,14 @@ def prepare_chunks_for_knowledge_base(text):
     return embedded_chunks
 
 #Working with knowledge base
-raw_chunks = load_document("knowledge_base.txt")
-chunks = prepare_chunks_for_knowledge_base(raw_chunks)
-query = "who is Jarvis?"
+_knowledge_base_cache = {}
 
-results = retrieve_context_from_knowledge_base(query, chunks)
+def embed(document_path, query):
+    if document_path not in _knowledge_base_cache:
+        text = load_document(document_path)
+        chunks = prepare_chunks_for_knowledge_base(text)
+        _knowledge_base_cache[document_path] = chunks
 
+    chunks = _knowledge_base_cache[document_path]
+    return retrieve_context_from_knowledge_base(query, chunks)
 
-print(results[0]["text"])
-print("-" * 40)

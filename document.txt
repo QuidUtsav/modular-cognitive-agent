@@ -1,0 +1,2 @@
+BERT is an encoder-only model
+GPT is a decoder-only model
