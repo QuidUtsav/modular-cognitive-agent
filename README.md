@@ -1,7 +1,6 @@
 🧠 Jarvis: Modular RAG Assistant (Week 2)
+![Untitleddesign-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/297270e2-eb51-45af-b230-17d87888b130)
 
-<video controls src="demo.webm" title="Title"></video>
-https://github.com/user-attachments/assets/e401c3ca-de27-4461-b6e4-b7b105ee6997
 
 A local, modular Personal AI Assistant built with Python, Hugging Face, and Scikit-Learn.
 
