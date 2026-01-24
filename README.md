@@ -1,4 +1,5 @@
 🧠 Jarvis: Modular RAG Assistant (Week 2)
+![Untitleddesign-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/297270e2-eb51-45af-b230-17d87888b130)
 
 
 A local, modular Personal AI Assistant built with Python, Hugging Face, and Scikit-Learn.
@@ -16,6 +17,9 @@ Key New Capabilities
     🧠 Decision Engine: A dedicated reasoning.py module that decides strategy (chat vs. retrieval vs. direct_answer) before acting.
 
     🛡️ Hallucination Guardrails: If the retrieval score is low (< 0.3), Jarvis explicitly admits "I don't know" rather than making things up.
+
+
+
 
     🏗️ Modular Architecture: Refactored from a single script into a scalable package structure (core, retrieval, memory).
 
