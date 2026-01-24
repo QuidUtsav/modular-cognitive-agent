@@ -77,10 +77,12 @@ def prepare_chunks_for_knowledge_base(text):
 _knowledge_base_cache = {}
 
 def embed(document_path, query):
+    print(f"[DEBUG] Embedding and retrieving from system identity base: {document_path}")
     if document_path not in _knowledge_base_cache:
         text = load_document(document_path)
-        print("[DEBUG] text found in document for embedding", len(text))
+        print(f"[DEBUG] Loaded document from {document_path}, length={len(text)} characters")
         chunks = prepare_chunks_for_knowledge_base(text)
+        print(f"[DEBUG] Prepared {len(chunks)} chunks for knowledge base")
         _knowledge_base_cache[document_path] = chunks
 
     chunks = _knowledge_base_cache[document_path]

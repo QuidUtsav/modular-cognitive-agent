@@ -21,12 +21,20 @@ labels = [
     "chat"
 ]
 CHAT_PHRASES = [
+    "hi",
+    "hello",
+    "thanks",
+    "thank you",
     "how are you",
     "tell me a joke",
     "what's up",
     "let's chat",
     "who are you",
-    "your name"
+    "your name",
+    "who created you",
+    "how do you feel",
+    "who are you",
+    "what can you do"
 ]
 
 RETRIEVAL_PHRASES = [
@@ -37,7 +45,9 @@ RETRIEVAL_PHRASES = [
     "according to",
     "from the document",
     "based on the document",
-    "in the text"
+    "in the text",
+    "who is",
+    "what is"
 ]
 
 REASONING_PHRASES = [

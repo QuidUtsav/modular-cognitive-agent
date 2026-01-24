@@ -91,8 +91,7 @@ def debug_decision(raw_text, intent, entities, response=None):
     }
 
 # Action for Chatbot
-
-while True:
+def social_conversation_action():
     raw_text = input("what do you have in mind today? ")
     normalized_text = raw_text.lower()
     if looks_like_info_request(normalized_text):
@@ -110,10 +109,5 @@ while True:
             response = random.choice(SOCIAL_ACT_RESPONSES["GREETING"])
     else:
         response = handle_factual_information_lookup(raw_text)
-    entities = extract_entities(raw_text)
-    debug = debug_decision(raw_text, intent, entities, response)
-    print(debug)
-    print("press 1 to exit")
-    if input() == "1":
-        break
+    return response
 

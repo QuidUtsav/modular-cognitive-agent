@@ -4,11 +4,10 @@ def rag_model(file_path, query):
 
     results = embed(file_path, query)
     if not results:
-        return "I don't know based on the provided documents."
+        return "Not found on the provided documents."
 
     top_score = results[0][0]
-
-    if top_score < 0.3:
+    if top_score < 0.15:
         return "I don't know based on the provided documents."
     
     contexts = []
@@ -17,7 +16,6 @@ def rag_model(file_path, query):
         contexts.append(chunk["text"])
 
     context = "\n\n".join(contexts)
-    
     prompt ="""Answer using ONLY the provided context.
             If the answer is not present, say you don’t know"""
     return generate_text(f"{prompt}\n\nContext: {context}\n\nQuestion: {query}")['answer']

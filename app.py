@@ -1,20 +1,8 @@
-from jarvis.retrieval.rag import rag_model
-from jarvis.core.reasoning import decide_strategy
-
-
-print("Jarvis is ready. Type 'exit' to quit.\n")
-
+from jarvis.controller import handle_query
+print("Welcome to Jarvis! Type your query below (type 'exit' to quit).")
 while True:
-    query = input("You: ")
-    if query.lower() == "exit":
+    prompt = input("User: ")
+    if prompt.lower() == "exit":
         break
-
-    strategy = decide_strategy(query)
-    print(f"[DEBUG] strategy={strategy}")
-
-    if strategy == "needs_retrieval" or strategy == "needs_reasoning":
-        response = rag_model("document.txt", query)
-    else:
-        response = "Not implemented yet"
-
+    response = handle_query(prompt)
     print("Jarvis:", response)
