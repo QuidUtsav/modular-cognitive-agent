@@ -18,7 +18,8 @@ labels = [
     "direct_answer",
     "needs_reasoning",
     "needs_retrieval",
-    "chat"
+    "chat",
+    "needs_web"
 ]
 CHAT_PHRASES = [
     "hi",
@@ -35,6 +36,15 @@ CHAT_PHRASES = [
     "how do you feel",
     "who are you",
     "what can you do"
+]
+WEB_PHRASES = [
+    "latest",
+    "current",
+    "today",
+    "news",
+    "price",
+    "recent",
+    "now"
 ]
 
 RETRIEVAL_PHRASES = [
@@ -68,7 +78,10 @@ def decide_strategy(user_query: str):
 
     if any(p in query for p in CHAT_PHRASES):
         return "chat"
-
+    
+    if any(p in query for p in WEB_PHRASES):
+        return "needs_web"
+    
     if any(p in query for p in RETRIEVAL_PHRASES):
         return "needs_retrieval"
 
