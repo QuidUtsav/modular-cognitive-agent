@@ -1,5 +1,7 @@
 🧠 Jarvis: Modular RAG Assistant (Week 2)
 
+<video controls src="demo.webm" title="Title"></video>
+
 A local, modular Personal AI Assistant built with Python, Hugging Face, and Scikit-Learn.
 
     Status: ✅ Week 2 Complete (RAG & Reasoning) Focus: Architecture, Local Retrieval, and Hallucination Control.
