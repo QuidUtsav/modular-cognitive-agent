@@ -21,16 +21,22 @@ lt_memory = LongTermMemory()
 
 def handle_query(query: str):
     
-    #Store long-term facts
-    facts = extract_user_facts(query)
-    for fact in facts:
-        lt_memory.store_fact(
-            mem_type=fact["type"],
-            key=fact["key"],
-            value=fact["value"],
-            confidence=fact["confidence"],
-            source=fact["source"]
-        )
+#Store long-term facts 
+    facts = extract_user_facts(query) 
+    if facts: 
+        saved_items=[] 
+        for fact in facts: 
+            lt_memory.store_fact( 
+                mem_type=fact["type"], 
+                key=fact["key"], value=fact["value"], 
+                confidence=fact["confidence"], 
+                source=fact["source"] 
+                ) 
+        saved_items.append(f"{fact['key']}: {fact['value']}") 
+        response=f"Got it! I've noted that you {', '.join(saved_items)}." 
+        st_memory.add(query, response) 
+        return response
+        
     # Check long-term memory for an answer
     memory_answer = lt_memory.answer_from_memory(query)
     if memory_answer:

@@ -1,132 +1,24 @@
 {
   "user_profile": [
     {
-      "id": "d0ea6a79-d03a-430d-9d6e-fb394777b9d3",
+      "id": "298be7dd-2216-4c02-9e9d-0d1680df25a7",
       "type": "user_profile",
       "key": "name",
       "value": "Utsav",
       "confidence": 0.95,
       "source": "explicit_user_statement",
-      "timestamp": "2026-01-25T10:52:07.949115"
-    },
-    {
-      "id": "f68a906d-f886-495a-bfe6-ac83152c25b5",
-      "type": "user_profile",
-      "key": "name",
-      "value": "Gemini",
-      "confidence": 0.95,
-      "source": "explicit_user_statement",
-      "timestamp": "2026-01-25T11:02:35.557102"
-    },
-    {
-      "id": "c7e76d62-09ec-47a2-b9af-7fbc6669365d",
-      "type": "user_profile",
-      "key": "name",
-      "value": "Utsav",
-      "confidence": 0.95,
-      "source": "explicit_user_statement",
-      "timestamp": "2026-01-25T11:05:07.972481"
-    },
-    {
-      "id": "3a244e8f-2384-4c7e-9fe7-ada67ae43c8a",
-      "type": "user_profile",
-      "key": "name",
-      "value": "Gemini",
-      "confidence": 0.95,
-      "source": "explicit_user_statement",
-      "timestamp": "2026-01-25T11:06:15.206300"
-    },
-    {
-      "id": "9cd87d4d-ae7b-4512-b0df-e50252a08ecc",
-      "type": "user_profile",
-      "key": "name",
-      "value": "Utsav",
-      "confidence": 0.95,
-      "source": "explicit_user_statement",
-      "timestamp": "2026-01-25T11:07:48.389479"
-    },
-    {
-      "id": "7387f19e-b18b-4eac-9265-6f143552957c",
-      "type": "user_profile",
-      "key": "name",
-      "value": "Gemini",
-      "confidence": 0.95,
-      "source": "explicit_user_statement",
-      "timestamp": "2026-01-25T11:08:12.609572"
-    },
-    {
-      "id": "15c64e4b-a240-4990-b67f-355fcaa1c6cf",
-      "type": "user_profile",
-      "key": "name",
-      "value": "Utsav I Live In Pokhara And I Am A Computer Engineering Student",
-      "confidence": 0.95,
-      "source": "explicit_user_statement",
-      "timestamp": "2026-01-25T11:26:42.626978"
-    },
-    {
-      "id": "c6c1e30a-42ce-49c2-a672-2198c7bc7bc4",
-      "type": "user_profile",
-      "key": "location",
-      "value": "Pokhara And I Am A Computer Engineering Student",
-      "confidence": 0.85,
-      "source": "explicit",
-      "timestamp": "2026-01-25T11:26:42.628139"
-    },
-    {
-      "id": "80f57a58-a717-4fa4-aec8-54132bf56ed1",
-      "type": "user_profile",
-      "key": "job",
-      "value": "Computer Engineering Student",
-      "confidence": 0.85,
-      "source": "explicit",
-      "timestamp": "2026-01-25T11:26:42.633839"
-    },
-    {
-      "id": "826a6e18-52ef-44e4-a0f0-341e6d7e1e7c",
-      "type": "user_profile",
-      "key": "name",
-      "value": "Utsav",
-      "confidence": 0.95,
-      "source": "explicit_user_statement",
-      "timestamp": "2026-01-25T11:28:52.253213"
-    },
-    {
-      "id": "5d309409-6535-4269-b963-866c8ff599ff",
-      "type": "user_profile",
-      "key": "location",
-      "value": "Pokhara",
-      "confidence": 0.85,
-      "source": "explicit",
-      "timestamp": "2026-01-25T11:28:52.254725"
-    },
-    {
-      "id": "e0836e03-4a9f-43da-8d01-cb6bb552a63c",
-      "type": "user_profile",
-      "key": "job",
-      "value": "Computer Engineering Student",
-      "confidence": 0.85,
-      "source": "explicit",
-      "timestamp": "2026-01-25T11:28:52.260147"
+      "timestamp": "2026-01-25T15:39:19.314341"
     }
   ],
   "user_preferences": [
     {
-      "id": "fb9d6852-c0c6-48fc-80da-600b0be3d594",
+      "id": "d94edac1-1bc7-4b4b-9d0d-4b432af0b8fb",
       "type": "user_preferences",
       "key": "likes",
       "value": "coding",
       "confidence": 0.8,
       "source": "explicit",
-      "timestamp": "2026-01-25T11:29:39.884645"
-    },
-    {
-      "id": "7fc1f82b-7db4-4ccd-8cbb-22c6fb9340a5",
-      "type": "user_preferences",
-      "key": "likes",
-      "value": "coding",
-      "confidence": 0.8,
-      "source": "explicit",
-      "timestamp": "2026-01-25T11:29:48.969256"
+      "timestamp": "2026-01-25T15:37:11.745908"
     }
   ],
   "system_facts": []
