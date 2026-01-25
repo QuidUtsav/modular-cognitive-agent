@@ -11,14 +11,36 @@ from jarvis.prompts.templates import (
     reasoning_prompt
 )
 import random
+from jarvis.memory.extractor import extract_user_facts
+from jarvis.memory.long_term import LongTermMemory
 
-memory = ShortTermMemory(max_turns=5)
+
+st_memory = ShortTermMemory(max_turns=5)
+lt_memory = LongTermMemory()
+
 
 def handle_query(query: str):
+    
+    #Store long-term facts
+    facts = extract_user_facts(query)
+    for fact in facts:
+        lt_memory.store_fact(
+            mem_type=fact["type"],
+            key=fact["key"],
+            value=fact["value"],
+            confidence=fact["confidence"],
+            source=fact["source"]
+        )
+    # Check long-term memory for an answer
+    memory_answer = lt_memory.answer_from_memory(query)
+    if memory_answer:
+        return memory_answer
+    
+    # Decide strategy
     strategy = decide_strategy(query)
     print(f"[DEBUG] strategy={strategy}")
 
-    memory_context = memory.get_context()
+    memory_context = st_memory.get_context()
     response = None  
 
     # ---- CHAT ----
@@ -59,6 +81,6 @@ def handle_query(query: str):
     else:
         response = "I am not sure how to handle that yet."
 
-    memory.add(query, response)
+    st_memory.add(query, response)
 
     return response

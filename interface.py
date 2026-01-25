@@ -1,9 +1,6 @@
-# --- REPLACEMENT FOR interface.py ---
 import streamlit as st
 import time
 
-# We only need the Controller now! 
-# It handles reasoning, RAG, and tools internally.
 from jarvis.controller import handle_query
 
 st.set_page_config(page_title="Jarvis AI", page_icon="🤖", layout="wide")
@@ -25,9 +22,6 @@ if prompt := st.chat_input("What is on your mind?"):
 
     with st.spinner("Processing..."):
         
-        # --- THE MAGIC CHANGE ---
-        # We let the controller handle EVERYTHING (Strategy, RAG, Search, Social)
-        # This keeps your web app perfectly synced with your terminal app.
         response = handle_query(prompt) 
         
         time.sleep(0.5)

@@ -12,7 +12,6 @@ def rag_model(file_path, query):
     
     contexts = []
     for score, chunk in results:
-        print(f"[DEBUG] score={score:.3f} chunk_id={chunk['chunk_id']}")
         contexts.append(chunk["text"])
 
     context = "\n\n".join(contexts)
