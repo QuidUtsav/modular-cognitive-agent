@@ -204,8 +204,6 @@ Jarvis: To reset the device, hold the power button for 10 seconds.
 
 🚧 Current Limitations
 
-    Short-Term Memory: Jarvis handles one question at a time. It doesn't yet remember "What did I just ask?".
-
     Single Document: Currently optimized for reading one text file at a time.
 
     Speed: First run is slow due to model downloading/loading.
