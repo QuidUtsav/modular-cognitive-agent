@@ -204,8 +204,7 @@ Jarvis: To reset the device, hold the power button for 10 seconds.
 
 🚧 Current Limitations
 
- HEAD
-=======
+
     Short-Term Memory: Jarvis handles one question at a time. It doesn't yet remember "What did I just ask?".
 
  83aa242 (Initial Jarvis project structure from fedora)
