@@ -8,6 +8,21 @@
       "confidence": 0.95,
       "source": "explicit_user_statement",
       "timestamp": "2026-01-25T15:39:19.314341"
+ HEAD
+
+ HEAD
+
+    },
+    {
+      "id": "94fb480a-d4cb-42ef-a074-9a495f4ac2e2",
+      "type": "user_profile",
+      "key": "name",
+      "value": "Utsav",
+      "confidence": 0.95,
+      "source": "explicit_user_statement",
+      "timestamp": "2026-01-26T16:44:38.629160"
+ 5373714 (Restoring project on Fedora)
+ 83aa242 (Initial Jarvis project structure from fedora)
     }
   ],
   "user_preferences": [

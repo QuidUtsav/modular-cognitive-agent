@@ -5,4 +5,9 @@ while True:
     if prompt.lower() == "exit":
         break
     response = handle_query(prompt)
+ HEAD
     print("Jarvis:", response)
+
+    print("Jarvis:", response)
+    print("testing purpose")
+ 83aa242 (Initial Jarvis project structure from fedora)
