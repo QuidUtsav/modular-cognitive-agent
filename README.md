@@ -1,6 +1,6 @@
 # 🧠 Modular Cognitive Agent
 
-![Python](https://img.shields.io/badge/Python-3.9%2B-blue?style=for-the-badge&logo=python)
+![Python](https://img.shields.io/badge/Python-3.14.2%2B-blue?style=for-the-badge&logo=python)
 ![PyTorch](https://img.shields.io/badge/PyTorch-2.0-ee4c2c?style=for-the-badge&logo=pytorch)
 ![HuggingFace](https://img.shields.io/badge/Hugging%20Face-Transformers-yellow?style=for-the-badge&logo=huggingface)
 ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
