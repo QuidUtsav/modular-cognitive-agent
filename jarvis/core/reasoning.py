@@ -1,3 +1,5 @@
+from jarvis.core.embeddings import embed_query
+from sklearn.metrics.pairwise import cosine_similarity
 """This module decides how the system should handle a user query."""
 
 """ 
@@ -14,79 +16,46 @@ def normalize(text: str):
     text = re.sub(r"[^a-z0-9\s]", "", text)
     return text
 
-labels = [
-    "direct_answer",
-    "needs_reasoning",
-    "needs_retrieval",
-    "chat",
-    "needs_web"
-]
-CHAT_PHRASES = [
-    "hi",
-    "hello",
-    "thanks",
-    "thank you",
-    "how are you",
-    "tell me a joke",
-    "what's up",
-    "let's chat",
-    "who are you",
-    "your name",
-    "who created you",
-    "how do you feel",
-    "who are you",
-    "what can you do"
-]
-WEB_PHRASES = [
-    "latest",
-    "current",
-    "today",
-    "news",
-    "price",
-    "recent",
-    "now"
-]
+STRATEGIES = {
+    "needs_web": (
+        "search google, who is, what is, current events, latest news, weather, real-time facts, president, ceo,"
+        "questions about current facts like who is the president, whats the weather, "
+        "latest software versions, prices, news, or real-world information"
+    ),
+    "direct_answer": (
+        "simple factual questions like how many months are in a year, "
+        "basic math, or well known facts"
+    ),
+    "needs_reasoning": (
+        "why and how questions that require explanation, logic, "
+        "or step by step reasoning"
+    ),
+    "needs_retrieval": (
+        "questions that must be answered using provided documents or text"
+    ),
+    "chat": (
+        "greetings, casual conversation, small talk, thanks, or jokes"
+    )
+}
 
-RETRIEVAL_PHRASES = [
-    "find",
-    "search",
-    "look up",
-    "retrieve",
-    "according to",
-    "from the document",
-    "based on the document",
-    "in the text",
-    "who is",
-    "what is"
-]
 
-REASONING_PHRASES = [
-    "why",
-    "how",
-    "explain",
-    "analyze",
-    "compare",
-    "difference between",
-    "pros and cons"
-]
+STRATEGY_EMBEDDINGS = {
+    name: embed_query(desc)
+    for name, desc in STRATEGIES.items()
+}
+
 
 """Priority: chat → retrieval → reasoning → direct_answer
 Retrieval is checked before reasoning because reasoning may depend on retrieved information."""
 
-def decide_strategy(user_query: str):
-    query = normalize(user_query)
-
-    if any(p in query for p in CHAT_PHRASES):
-        return "chat"
+def semantic_routing(user_quer: str):
+    query_emb = embed_query(user_quer)
     
-    if any(p in query for p in WEB_PHRASES):
-        return "needs_web"
+    scores= {}
+    for strategy, emb in STRATEGY_EMBEDDINGS.items():
+        score = cosine_similarity([query_emb],[emb])[0][0]
+        scores[strategy]=score
+    best_strategy = max(scores, key= scores.get)
+    confidence = scores[best_strategy]
     
-    if any(p in query for p in RETRIEVAL_PHRASES):
-        return "needs_retrieval"
-
-    if any(p in query for p in REASONING_PHRASES):
-        return "needs_reasoning"
-
-    return "direct_answer"
-
+    return best_strategy, confidence

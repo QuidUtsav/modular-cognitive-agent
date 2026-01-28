@@ -1,13 +1,11 @@
-from jarvis.core.reasoning import decide_strategy
+from jarvis.core.reasoning import semantic_routing
 from jarvis.retrieval.rag import rag_model
 from jarvis.core.intent import handle_social_conversation, SOCIAL_ACT_RESPONSES
-from jarvis.tools.web_search import web_search
-from jarvis.core.generation import generate_text
+from jarvis.core.generation import handle_web_search,generate_text
 from jarvis.memory.short_term import ShortTermMemory
 from jarvis.prompts.templates import (
     chat_prompt,
     retrieval_prompt,
-    web_prompt,
     reasoning_prompt
 )
 import random
@@ -32,7 +30,7 @@ def handle_query(query: str):
                 confidence=fact["confidence"], 
                 source=fact["source"] 
                 ) 
-        saved_items.append(f"{fact['key']}: {fact['value']}") 
+            saved_items.append(f"{fact['key']}: {fact['value']}") 
         response=f"Got it! I've noted that you {', '.join(saved_items)}." 
         st_memory.add(query, response) 
         return response
@@ -40,12 +38,17 @@ def handle_query(query: str):
     # Check long-term memory for an answer
     memory_answer = lt_memory.answer_from_memory(query)
     if memory_answer:
+        st_memory.add(query, memory_answer)
         return memory_answer
     
     # Decide strategy
-    strategy = decide_strategy(query)
-    print(f"[DEBUG] strategy={strategy}")
-
+    strategy, confidence = semantic_routing(query)
+    print(f"[DEBUG] strategy={strategy}, confidence={confidence}")
+    if strategy =="needs_web":
+        return handle_web_search(query, st_memory.get_context())
+    if confidence < 0.12:
+        strategy = "chat"  
+        
     memory_context = st_memory.get_context()
     response = None  
 
@@ -59,30 +62,19 @@ def handle_query(query: str):
 
     # ---- WEB ----
     elif strategy == "needs_web":
-        results = web_search(query)
-
-        clean_snippets = [
-            r["snippet"].strip()
-            for r in results
-            if len(r["snippet"].strip()) > 20
-        ]
-
-        context = "\n".join(clean_snippets)
-
-        prompt = web_prompt(
-            memory_context=memory_context,
-            context=context,
-            query=query
-        )
-
-        response = generate_text(prompt)
+        response = handle_web_search(query, memory_context)
 
     # ---- RAG / RETRIEVAL ----
     elif strategy in ["needs_retrieval", "needs_reasoning", "direct_answer"]:
         retrieved_chunks = rag_model("document.txt", query)
-
-        response = retrieved_chunks
-
+        generated_text_from_rag = generate_text(
+            retrieval_prompt(
+                memory_context=memory_context,
+                context=retrieved_chunks,
+                query=query
+            )
+        )
+        response = generated_text_from_rag
 
     else:
         response = "I am not sure how to handle that yet."

@@ -36,7 +36,7 @@ def chunk_knowledge_base(text):
   
 def embed_chunks(chunks):
     texts = [c["text"] for c in chunks]
-    embeddings = embedding_model.encode(texts)
+    embeddings = embedding_model.encode(texts,normalize_embeddings=True)
 
     for chunk, emb in zip(chunks, embeddings):
         chunk["embedding"] = emb
@@ -47,7 +47,7 @@ def normalize_query(query):
     return query.strip()
 
 def embed_query(query):
-    return embedding_model.encode([query])[0]
+    return embedding_model.encode([query],normalize_embeddings=True)[0]
 
 def retrieve_top_chunks_from_knowledge_base(chunks, query_embedding, top_k=3):
     scores = []
@@ -79,7 +79,6 @@ _knowledge_base_cache = {}
 def embed(document_path, query):
     if document_path not in _knowledge_base_cache:
         text = load_document(document_path)
-        print("[DEBUG] text found in document for embedding", len(text))
         chunks = prepare_chunks_for_knowledge_base(text)
         _knowledge_base_cache[document_path] = chunks
 

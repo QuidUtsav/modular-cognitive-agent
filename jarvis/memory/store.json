@@ -8,8 +8,6 @@
       "confidence": 0.95,
       "source": "explicit_user_statement",
       "timestamp": "2026-01-25T15:39:19.314341"
-
-
     },
     {
       "id": "94fb480a-d4cb-42ef-a074-9a495f4ac2e2",
@@ -19,7 +17,15 @@
       "confidence": 0.95,
       "source": "explicit_user_statement",
       "timestamp": "2026-01-26T16:44:38.629160"
-      
+    },
+    {
+      "id": "e0f8acc8-49f9-4a87-bc86-32b1feedb282",
+      "type": "user_profile",
+      "key": "name",
+      "value": "Utsav",
+      "confidence": 0.95,
+      "source": "explicit_user_statement",
+      "timestamp": "2026-01-28T11:18:55.354177"
     }
   ],
   "user_preferences": [
@@ -31,6 +37,24 @@
       "confidence": 0.8,
       "source": "explicit",
       "timestamp": "2026-01-25T15:37:11.745908"
+    },
+    {
+      "id": "bd7598c2-58b9-438f-ba53-65b8ada4e0b5",
+      "type": "user_preferences",
+      "key": "likes",
+      "value": "coding",
+      "confidence": 0.8,
+      "source": "explicit",
+      "timestamp": "2026-01-28T11:19:30.298063"
+    },
+    {
+      "id": "c4498915-8364-4fba-b0c6-c172738b9ac0",
+      "type": "user_preferences",
+      "key": "likes",
+      "value": "you jarvis",
+      "confidence": 0.8,
+      "source": "explicit",
+      "timestamp": "2026-01-28T11:34:59.648235"
     }
   ],
   "system_facts": []

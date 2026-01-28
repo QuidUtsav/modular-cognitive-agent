@@ -8,4 +8,3 @@ while True:
 
     print("Jarvis:", response)
 
-    print("Jarvis:", response)

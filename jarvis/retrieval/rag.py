@@ -17,5 +17,5 @@ def rag_model(file_path, query):
     context = "\n\n".join(contexts)
     prompt ="""Answer using ONLY the provided context.
             If the answer is not present, say you don’t know"""
-    return generate_text(f"{prompt}\n\nContext: {context}\n\nQuestion: {query}")['answer']
+    return generate_text(f"{prompt}\n\nContext: {context}\n\nQuestion: {query}")
     

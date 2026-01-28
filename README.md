@@ -1,225 +1,110 @@
-🧠 Jarvis: Modular RAG Assistant (Week 2)
-![Untitleddesign-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/297270e2-eb51-45af-b230-17d87888b130)
+# 🧠 Modular Cognitive Agent
 
+![Python](https://img.shields.io/badge/Python-3.9%2B-blue?style=for-the-badge&logo=python)
+![PyTorch](https://img.shields.io/badge/PyTorch-2.0-ee4c2c?style=for-the-badge&logo=pytorch)
+![HuggingFace](https://img.shields.io/badge/Hugging%20Face-Transformers-yellow?style=for-the-badge&logo=huggingface)
+![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 
-A local, modular Personal AI Assistant built with Python, Hugging Face, and Scikit-Learn.
+A local, deterministic AI system designed for **controllable reasoning** and **retrieval-augmented generation (RAG)**.
 
-    Status: ✅ Week 2 Complete (RAG & Reasoning) Focus: Architecture, Local Retrieval, and Hallucination Control.
+Unlike standard chatbot wrappers that rely solely on probabilistic generation, this system uses a "Router-Controller" architecture to decide *how* to answer before generating text—switching dynamically between casual conversation, internal knowledge retrieval, and real-time web search.
 
-Unlike simple API wrappers, Jarvis is designed as a cognitive system. It doesn't just guess; it reasons about how to answer a question—whether to chat casually, use internal logic, or retrieve facts from a local knowledge base (RAG).
-🚀 Week 2: The "Brain" Upgrade
+---
 
-In Week 2, the system evolved from a simple intent classifier into a Retrieval-Augmented Generation (RAG) pipeline.
-Key New Capabilities
+## 🚀 Key Capabilities
 
-    📚 Local RAG System: Can read, chunk, and "learn" from local documents (document.txt) without uploading data to the cloud.
+### 1. 🧠 Semantic Routing (The "Brain")
+The system doesn't just guess; it classifies intent.
+- **Chat Mode:** Handles greetings and small talk instantly.
+- **RAG Mode:** Detects when a user asks about specific stored documents.
+- **Web Mode:** (In Progress) Detects questions requiring real-time data.
 
-    🧠 Decision Engine: A dedicated reasoning.py module that decides strategy (chat vs. retrieval vs. direct_answer) before acting.
+### 2. 📚 Local RAG Pipeline
+- **Zero-Cloud Dependency:** Chunks, embeds, and retrieves knowledge locally using `sentence-transformers`.
+- **Hallucination Guardrails:** If retrieval confidence is low (< 0.3), the system explicitly admits ignorance rather than fabricating facts.
 
-    🛡️ Hallucination Guardrails: If the retrieval score is low (< 0.3), Jarvis explicitly admits "I don't know" rather than making things up.
+### 3. 🛡️ Modular Architecture
+- **Decoupled Logic:** The reasoning engine is separate from the generation engine.
+- **Scalable Tools:** New capabilities (e.g., Calculator, OS Control) can be added as isolated modules without breaking the core loop.
 
+---
 
+## 🛠️ System Architecture
 
+The project follows a **Manager-Worker** pattern. The `Controller` acts as the central brain, delegating tasks to specialized workers.
 
-    🏗️ Modular Architecture: Refactored from a single script into a scalable package structure (core, retrieval, memory).
-
-🛠️ System Architecture
-
-The project follows a "Manager-Worker" pattern to separate concerns.
-
+```mermaid
 graph TD
-    A[User Input] --> B[app.py (Manager)]
-    B --> C{Reasoning Engine}
-    C -- "Hello" --> D[Chat Module]
-    C -- "Explain X" --> E[RAG Pipeline]
+    User[User Input] --> Controller[Controller (Manager)]
     
-    subgraph "RAG Pipeline"
-    E --> F[Vector Search (TF-IDF/Cosine)]
-    F --> G[Retrieve Context]
-    G --> H[Generator (Flan-T5)]
+    subgraph "Decision Layer"
+    Controller --> Router{Semantic Router}
     end
     
-    D --> I[Output]
-    H --> I
-
-📂 File Structure
-    jarvis/
-    ├── app.py                 # The Main Entry Point (The Manager)
-    ├── data/
-    │   └── document.txt       # Local Knowledge Base
-    ├── jarvis/
-    │   ├── core/
-    │   │   ├── reasoning.py   # Decides Strategy (Chat vs. RAG)
-    │   │   ├── generation.py  # Wraps LLM (Flan-T5)
-    │   │   └── embeddings.py  # Handles Chunking & Vector Encoding
-    │   └── retrieval/
-    │       └── rag.py         # Combines Search + Generation
-
-🤖 Tech Stack & Models
-Component,Technology / Model,Role
-Generator,google/flan-t5-base,Generates natural language answers from context.
-Embeddings,all-MiniLM-L6-v2,Converts text into vector numbers for search.
-Similarity,Cosine Similarity,Math used to find the best matching paragraph.
-Framework,PyTorch & Transformers,The backbone for running models locally.
-
-⚡ How It Works (The Logic Flow)
-
-    Input Normalization: User text is cleaned (lowercased, special characters removed).
-
-    Strategy Decision:
-
-        If the user asks "How are you?", the Chat Strategy handles it instantly.
-
-        If the user asks "Based on the document...", the Retrieval Strategy kicks in.
-
-    Retrieval (If needed):
-
-        The system loads document.txt, splits it into chunks, and caches the embeddings.
-
-        It finds the top 3 chunks most similar to the question.
-
-    Generation:
-
-        The LLM receives a prompt: "Answer using ONLY this context..."
-
-        If context is missing or irrelevant, it returns a fallback response.
-
-💻 Usage
-1. Setup
-
-Ensure you have the required libraries installed:
-    pip install transformers torch scikit-learn sentence-transformers
-
-This is a huge milestone! You’ve moved from a simple text classifier to a full Retrieval-Augmented Generation (RAG) system with a modular architecture. That is a serious jump in complexity.
-
-Here is a professional, high-impact README.md tailored for your Week 2 completion. It highlights your move to "Systems Engineering" and the new capabilities like RAG, Reasoning, and Modular Design.
-
-You can copy-paste this directly into your README.md file.
-🧠 Jarvis: Modular RAG Assistant (Week 2)
-
-A local, modular Personal AI Assistant built with Python, Hugging Face, and Scikit-Learn.
-
-    Status: ✅ Week 2 Complete (RAG & Reasoning) Focus: Architecture, Local Retrieval, and Hallucination Control.
-
-Unlike simple API wrappers, Jarvis is designed as a cognitive system. It doesn't just guess; it reasons about how to answer a question—whether to chat casually, use internal logic, or retrieve facts from a local knowledge base (RAG).
-🚀 Week 2: The "Brain" Upgrade
-
-In Week 2, the system evolved from a simple intent classifier into a Retrieval-Augmented Generation (RAG) pipeline.
-Key New Capabilities
-
-    📚 Local RAG System: Can read, chunk, and "learn" from local documents (document.txt) without uploading data to the cloud.
-
-    🧠 Decision Engine: A dedicated reasoning.py module that decides strategy (chat vs. retrieval vs. direct_answer) before acting.
-
-    🛡️ Hallucination Guardrails: If the retrieval score is low (< 0.3), Jarvis explicitly admits "I don't know" rather than making things up.
-
-    🏗️ Modular Architecture: Refactored from a single script into a scalable package structure (core, retrieval, memory).
-
-🛠️ System Architecture
-
-The project follows a "Manager-Worker" pattern to separate concerns.
-Code snippet
-
-graph TD
-    A[User Input] --> B[app.py (Manager)]
-    B --> C{Reasoning Engine}
-    C -- "Hello" --> D[Chat Module]
-    C -- "Explain X" --> E[RAG Pipeline]
-    
-    subgraph "RAG Pipeline"
-    E --> F[Vector Search (TF-IDF/Cosine)]
-    F --> G[Retrieve Context]
-    G --> H[Generator (Flan-T5)]
+    subgraph "Execution Layer"
+    Router -- "Casual Chat" --> Chat[Chat Module]
+    Router -- "Specific Fact" --> RAG[RAG Pipeline]
+    Router -- "Live Info" --> Web[Web Search Tool]
     end
     
-    D --> I[Output]
-    H --> I
+    subgraph "Data Layer"
+    RAG --> VectorDB[(Local Vector Store)]
+    Web --> Internet((Internet))
+    end
+    
+    Chat --> Response
+    RAG --> Response
+    Web --> Response
+    Response --> User
 
-📂 File Structure
-Plaintext
-
+📂 Project Structure
 jarvis/
-├── app.py                 # The Main Entry Point (The Manager)
+├── app.py                 # Main Entry Point (CLI Interface)
 ├── data/
-│   └── document.txt       # Local Knowledge Base
+│   ├── document.txt       # Local Knowledge Base (Source of Truth)
+│   └── store.json         # Persistent Memory (JSON DB)
 ├── jarvis/
 │   ├── core/
-│   │   ├── reasoning.py   # Decides Strategy (Chat vs. RAG)
-│   │   ├── generation.py  # Wraps LLM (Flan-T5)
-│   │   └── embeddings.py  # Handles Chunking & Vector Encoding
-│   └── retrieval/
-│       └── rag.py         # Combines Search + Generation
+│   │   ├── controller.py  # Orchestrates the flow
+│   │   ├── reasoning.py   # Semantic Intent Classification
+│   │   └── intent.py      # Hardcoded social rules
+│   ├── memory/
+│   │   ├── long_term.py   # Manages JSON storage
+│   │   └── short_term.py  # Manages active session context
+│   ├── retrieval/
+│   │   └── rag.py         # Vector Search + Generation Logic
+│   └── tools/
+│       └── web_search.py  # External API Interface
 
-🤖 Tech Stack & Models
-Component	Technology / Model	Role
-Generator	google/flan-t5-base	Generates natural language answers from context.
-Embeddings	all-MiniLM-L6-v2	Converts text into vector numbers for search.
-Similarity	Cosine Similarity	Math used to find the best matching paragraph.
-Framework	PyTorch & Transformers	The backbone for running models locally.
-⚡ How It Works (The Logic Flow)
-
-    Input Normalization: User text is cleaned (lowercased, special characters removed).
-
-    Strategy Decision:
-
-        If the user asks "How are you?", the Chat Strategy handles it instantly.
-
-        If the user asks "Based on the document...", the Retrieval Strategy kicks in.
-
-    Retrieval (If needed):
-
-        The system loads document.txt, splits it into chunks, and caches the embeddings.
-
-        It finds the top 3 chunks most similar to the question.
-
-    Generation:
-
-        The LLM receives a prompt: "Answer using ONLY this context..."
-
-        If context is missing or irrelevant, it returns a fallback response.
+🤖 Tech Stack
+Component,Technology,Role
+LLM,google/flan-t5-base,Text Generation (runs locally on CPU).
+Embeddings,all-MiniLM-L6-v2,Converts text to vectors for search.
+Routing,scikit-learn,Cosine Similarity for intent classification.
+Search,DuckDuckGo,Real-time internet access (Headless).
 
 💻 Usage
-1. Setup
+1. Setup Environment
+# Clone the repo
+git clone [https://github.com/yourusername/modular-cognitive-agent.git](https://github.com/yourusername/modular-cognitive-agent.git)
 
-Ensure you have the required libraries installed:
+# Install dependencies
+pip install torch transformers scikit-learn sentence-transformers duckduckgo-search
 
-    pip install transformers torch scikit-learn sentence-transformers
-
-2. Run Jarvis
-
-Execute the main application:
-
-    python app.py
+2. Run the Agent
+python app.py
 
 3. Example Interaction
+You: Hello!
+[DEBUG] Strategy: chat (Confidence: 0.98)
+Agent: I'm Jarvis — an AI assistant. I'm still learning about myself.
 
-You: Who are you?
-[DEBUG] strategy=chat
-Jarvis: I am just here to help you 🙂
-
-You: How do I reset the device?
-[DEBUG] strategy=needs_retrieval
-[DEBUG] score=0.85 chunk_id=4
-Jarvis: To reset the device, hold the power button for 10 seconds.
-
-🚧 Current Limitations
+You: What is in the document?
+[DEBUG] Strategy: needs_retrieval (Confidence: 0.85)
+[DEBUG] Retrieved Chunk ID: 2
+Agent: The document contains security protocols for the server reset procedure.
 
 
-    Short-Term Memory: Jarvis handles one question at a time. It doesn't yet remember "What did I just ask?".
+👨‍💻 Author
 
- 83aa242 (Initial Jarvis project structure from fedora)
-    Single Document: Currently optimized for reading one text file at a time.
-
-    Speed: First run is slow due to model downloading/loading.
-
-🛣️ Roadmap: Week 3
-
-    🧠 Conversation History: Implement memory so Jarvis remembers the context of the chat.
-
-    🛠️ Tool Use: Allow Jarvis to perform actions (e.g., "Write this to a file" or "Calculate this").
-
-    ⚡ Speed Optimization: Implement better caching to speed up repeated queries.
-
-👨‍💻 About the Author
-
-This project is a journey into Applied AI Engineering—moving beyond API calls to building deterministic, controllable AI systems from scratch.
+Built as a study in Applied AI Engineering—moving beyond API wrappers to build deterministic, controllable systems.
