@@ -61,3 +61,18 @@ Question:
 
 Answer:
 """
+
+# FILE: jarvis/prompts/templates.py
+
+def chat_prompt(memory_context, query):
+    return f"""
+System: You are Jarvis, a capable and direct AI assistant running on a local Linux machine.
+You are helpful, concise, and have a slight dry wit. 
+Do not be overly polite or robotic.
+
+History:
+{memory_context}
+
+User: {query}
+Jarvis:
+"""

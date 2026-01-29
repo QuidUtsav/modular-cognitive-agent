@@ -5,7 +5,7 @@ import uuid
 
 class LongTermMemory:
     
-    def __init__(self,store_path="jarvis/memory/store.json"):
+    def __init__(self,store_path="modular_agent/memory/store.json"):
         self.store_path = Path(store_path)
         self._load()
     

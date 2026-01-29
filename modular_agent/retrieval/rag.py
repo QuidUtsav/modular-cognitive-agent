@@ -1,5 +1,5 @@
-from jarvis.core.embeddings import embed
-from jarvis.core.generation import generate_text
+from modular_agent.core.embeddings import embed
+from modular_agent.core.generation import generate_text
 def rag_model(file_path, query):
 
     results = embed(file_path, query)

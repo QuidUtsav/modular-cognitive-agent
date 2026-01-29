@@ -1,4 +1,4 @@
-from jarvis.core.embeddings import embed_query
+from modular_agent.core.embeddings import embed_query
 from sklearn.metrics.pairwise import cosine_similarity
 """This module decides how the system should handle a user query."""
 

@@ -1,16 +1,16 @@
-from jarvis.core.reasoning import semantic_routing
-from jarvis.retrieval.rag import rag_model
-from jarvis.core.intent import handle_social_conversation, SOCIAL_ACT_RESPONSES
-from jarvis.core.generation import handle_web_search,generate_text
-from jarvis.memory.short_term import ShortTermMemory
-from jarvis.prompts.templates import (
+from modular_agent.core.reasoning import semantic_routing
+from modular_agent.retrieval.rag import rag_model
+from modular_agent.core.intent import handle_social_conversation, SOCIAL_ACT_RESPONSES
+from modular_agent.core.generation import handle_web_search,generate_text
+from modular_agent.memory.short_term import ShortTermMemory
+from modular_agent.prompts.templates import (
     chat_prompt,
     retrieval_prompt,
     reasoning_prompt
 )
 import random
-from jarvis.memory.extractor import extract_user_facts
-from jarvis.memory.long_term import LongTermMemory
+from modular_agent.memory.extractor import extract_user_facts
+from modular_agent.memory.long_term import LongTermMemory
 
 
 st_memory = ShortTermMemory(max_turns=5)
@@ -52,14 +52,17 @@ def handle_query(query: str):
     memory_context = st_memory.get_context()
     response = None  
 
-    # ---- CHAT ----
+    # ---- CHAT STRATEGY ----
     if strategy == "chat":
         social_intent = handle_social_conversation(query.lower())
+        
         if social_intent and social_intent in SOCIAL_ACT_RESPONSES:
             response = random.choice(SOCIAL_ACT_RESPONSES[social_intent])
+        
         else:
-            response = "I'm Jarvis — an AI assistant I'm still learning about myself 🙂"
-
+            prompt = chat_prompt(memory_context, query)
+            response = generate_text(prompt)
+            
     # ---- WEB ----
     elif strategy == "needs_web":
         response = handle_web_search(query, memory_context)

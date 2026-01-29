@@ -1,10 +1,10 @@
 from transformers import pipeline
-from jarvis.prompts.templates import web_prompt
-from jarvis.tools.web_search import web_search
+from modular_agent.prompts.templates import web_prompt
+from modular_agent.tools.web_search import web_search
 
 
 generator = pipeline(
-    task="text2text-generation",
+    task="text-generation",
     model = "google/flan-t5-base"
 )
 
@@ -14,7 +14,7 @@ def generate_text(prompt):
 
     output = generator(
         prompt,
-        max_new_tokens=100,
+        max_new_tokens=150,
         do_sample=False
     )
     return output[0]["generated_text"]
